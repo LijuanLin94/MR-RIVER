@@ -8,17 +8,16 @@ MR-RIVER, which extends score-based MR to summarized results and incorporates mu
 ```
 # Load a mrdata
 * bzx:         vector, SNP effects on risk factor
-* bzx_se:	   vector, standard errors of bzx
+* bzx_se:      vector, standard errors of bzx
 * bzx_pval:    vector, p values for bzx
 * bzx_maf:     vector, minor allele frequency of SNP	
 * varx:        variance of risk factor
-* bzx_n:	   sample size of GWAS for the risk factor
+* bzx_n:       sample size of GWAS for the risk factor
 * bzy:         vector, SNP effects on disease
 * bzy_se:      vector, standard errors of bzy
 * bzy_pval:    vectorm p values of bzy
 * snpid:       instrumental variables
 * varz_x:      vector, variance of SNP
-* n_ref:       sample size of GWAS for risk factor
 
 load("mrdata.RData")
 
@@ -31,6 +30,6 @@ load("snpld.RData")
 * MAF:             flag for maf,defult is TRUE
 * var:             flag for variance,defult is FALSE
 * ldrho:           matrix, correlation between SNPs
-MR_RIVER<-(MRdata = mrdata, ldrho =ldrho, gwas_thresh = 5e-8,
-		   ld_r2_thresh = 0.5, MAF = TRUE, var=FALSE)
+
+MR_RIVER<-(MRdata = mrdata, ldrho =ldrho, gwas_thresh = 5e-8, ld_r2_thresh = 0.5, MAF = TRUE, var=FALSE)
 ```
