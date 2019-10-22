@@ -5,7 +5,7 @@ Mendelian Randomization with Refined Instrumental Variable from Genetic Score (M
 MR-RIVER, which extends score-based MR to summarized results and incorporates multiple correlated IVs, appeared to outperform the examined MR methods, and provided a more accurate and powerful means for the discovery of novel risk factors. 
 
 # Example
-'''
+```
 # Load a mrdata
 * bzx:         vector, SNP effects on risk factor
 * bzx_se:	   vector, standard errors of bzx
@@ -33,4 +33,4 @@ load("snpld.RData")
 * ldrho:           matrix, correlation between SNPs
 MR_RIVER<-(MRdata = mrdata, ldrho =ldrho, gwas_thresh = 5e-8,
 		   ld_r2_thresh = 0.5, MAF = TRUE, var=FALSE)
-'''
+```
