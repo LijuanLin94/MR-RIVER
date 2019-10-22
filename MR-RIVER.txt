@@ -34,8 +34,7 @@ beta_mod <- function(beta, n_ref, ldrho, varz=NULL, maf=NULL, vary){
   # Generalized Inverse of a Matrix
   bzy <- ginv(coef_zz)%*%beta   # adjust SNP effects on the disease
   
-  # if ncovar>0 then sigma should adjust by covar
-  Sigma <- abs(vary-t(bzy)%*%var_zz%*%bzy)
+  Sigma <- abs(as.vector(vary-t(bzy)%*%var_zz)%*%bzy)
   zz <- ginv(var_zz)  
   df <- n_ref-nrow(ldrho)-1   
   bzy_se <- sqrt(Sigma[1,1]*diag(zz)/df)  
@@ -94,7 +93,7 @@ snp_ld_prune = function(ldrho, ld_r2_thresh) {
 # bzx_pval:  vector, p values for bzx
 # bzy:       vector, SNP effects on disease
 # bzy_se:    vector, standard errors of bzy
-# snpid:     instrumental variables
+# SNP:       instrumental variables
 # bzx_maf:   vector, minor allele frequency of SNP	
 # varz_x:    vector, variance of SNP
 # MAF:       flag for maf
@@ -105,13 +104,13 @@ snp_ld_prune = function(ldrho, ld_r2_thresh) {
 # gwas_thresh:  threshold p-value to select IVs from GWAS for risk factor
 # ld_r2_thresh: LD r2 threshold to remove SNPs in high LD
 
-MR_RIVER<-function(mrdata, varz_x=NULL, MAF=TRUE, var=FALSE,
+MR_RIVER<-function(mrdata, MAF=TRUE, var=FALSE,
                    ldrho, varx, n_ref, eps = 1e-6, 
                    gwas_thresh=1,ld_r2_thresh=1){
   
   # GWAS prune based on bzx_pval
   mrdata <- mrdata[mrdata$bzx_pval<=gwas_thresh,]
-  rho <- ldrho[mrdata$snpid,mrdata$snpid]
+  rho <- ldrho[mrdata$SNP,mrdata$SNP]
   
   # LD prune according to r2
   index <- snp_ld_prune(rho, ld_r2_thresh)
@@ -123,13 +122,13 @@ MR_RIVER<-function(mrdata, varz_x=NULL, MAF=TRUE, var=FALSE,
   nsnps<-nrow(mrdata)
   
   if(MAF==TRUE){
-    tmp <- beta_mod(beta=mrdata$bzx,n_ref=n_ref,ldrho=rho,
-                    varz=NULL,maf=mrdata$bzx_maf,vary=varx)
+    tmp <- beta_mod(beta=mrdata$bzx, n_ref=mrdata$bzx_n, ldrho=rho,
+                    varz=NULL, maf=mrdata$bzx_maf, vary=mrdata$varx)
     
   }
   if(var==TRUE){
-    tmp <- beta_mod(beta=mrdata$bzx, n_ref=n_ref, ldrho=rho,
-                    varz=mrdata$varz_x, vary=varx, maf=NULL)
+    tmp <- beta_mod(beta=mrdata$bzx, n_ref=mrdata$bzx_n, ldrho=rho,
+                    varz=mrdata$varz_x, vary=mrdata$varx, maf=NULL)
   }
   
   bzy <- mrdata$bzy    # SNP effects on the disease
