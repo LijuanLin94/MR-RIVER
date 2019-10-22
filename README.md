@@ -24,6 +24,8 @@ load("mrdata.RData")
 # Load LD correlation matrix
 load("snpld.RData")
 
+source("MR-RIVER.txt")
+
 # Run MR-RIVER
 * gwas_thresh:     threshold p-value to select instruments from GWAS for risk factor
 * ld_r2_thresh:    LD r2 threshold to remove SNPs in high LD
